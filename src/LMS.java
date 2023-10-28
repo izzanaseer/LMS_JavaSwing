@@ -16,11 +16,12 @@ public class LMS extends JFrame {
     private JButton editItemButton;
     private JButton deleteItemButton;
     private List<Book> books;
+    private DefaultTableModel tableModel;
 
     public LMS() {
         super("GUI Example");
 
-        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"Title", "Author", "Publication Year", "Read Item"}, 0);
+        tableModel = new DefaultTableModel(new String[]{"Title", "Author", "Publication Year", "Read Item"}, 0);
         table = new JTable(tableModel);
 
         scrollPane = new JScrollPane(table);
@@ -63,7 +64,40 @@ public class LMS extends JFrame {
 
 
         deleteItemButton.addActionListener(e -> {
-            // Delete the selected item from the table
+            // Show an input dialog to get the name of the item to delete
+            String itemNameToDelete = JOptionPane.showInputDialog(this, "Enter the name of the item to delete:");
+
+            if (itemNameToDelete != null && !itemNameToDelete.isEmpty()) {
+                // Find and remove the item from the list of books
+                Book bookToRemove = null;
+                for (Book book : books) {
+                    if (book.getTitle().equals(itemNameToDelete)) {
+                        bookToRemove = book;
+                        break;
+                    }
+                }
+
+                if (bookToRemove != null) {
+                    // Remove the book from the list
+                    books.remove(bookToRemove);
+
+                    // Remove the item from the table
+                    DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+                    for (int i = 0; i < tableModel.getRowCount(); i++) {
+                        if (tableModel.getValueAt(i, 0).equals(itemNameToDelete)) {
+                            tableModel.removeRow(i);
+                            break;
+                        }
+                    }
+
+                    // Save the updated data to the text file
+                    saveLibraryData(books);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Item not found in the library.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Please enter a valid item name.");
+            }
         });
 
         // Initialize the books list
@@ -82,7 +116,7 @@ public class LMS extends JFrame {
                 books.add(book);
             }
 
-            DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+            //DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
             for (Book book : books) {
                 tableModel.addRow(new Object[]{book.getTitle(), book.getAuthor(), book.getPublicationYear()});
             }
