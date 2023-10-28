@@ -16,14 +16,14 @@ public class LMS extends JFrame {
     private JButton editItemButton;
     private JButton deleteItemButton;
     private List<Book> books;
-    private static final String FILE_NAME = "data.txt";
+    //private static final String FILE_NAME = "data.txt";
 
     public LMS() {
-        super("User Friendly GUI");
+        super("GUI Example");
 
         // Create the JTable
         DefaultTableModel tableModel = new DefaultTableModel(new String[]{"Title", "Author", "Publication Year", "Read Item"}, 0);
-
+        table = new JTable(tableModel);
 
         // Create the JScrollPane
         scrollPane = new JScrollPane(table);
@@ -51,7 +51,8 @@ public class LMS extends JFrame {
 
         // Add listeners to the buttons
         addItemButton.addActionListener(e -> {
-            // Add a new item to the table
+            // Add a new item to the table and update the list
+            // After adding, call saveLibraryData(books) to save the updated data to the file
         });
 
         editItemButton.addActionListener(e -> {
@@ -74,11 +75,19 @@ public class LMS extends JFrame {
                 Book book = new Book(values[0], values[1], Integer.parseInt(values[2]), Integer.parseInt(values[3]));
                 books.add(book);
             }
+
+            // Populate the JTable with the data
+            DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+            for (Book book : books) {
+                tableModel.addRow(new Object[]{book.getTitle(), book.getAuthor(), book.getPublicationYear()});
+            }
+            // Add the button column renderer and editor
+            table.getColumnModel().getColumn(3).setCellRenderer(new TableRenderBtn());
+            table.getColumnModel().getColumn(3).setCellEditor(new TableBtnEditor(new JTextField()));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        this.books = books;
     }
 
     public void saveLibraryData(List<Book> books) {

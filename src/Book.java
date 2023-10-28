@@ -16,4 +16,16 @@ public class Book {
     public void setTitle(String title) {
         this.title = title;
     }
+
+    public String getAuthor() {
+        return this.author;
+    }
+
+    public int getPublicationYear() {
+        return this.year;
+    }
+
+    public int getPopularity() {
+        return this.popularityCount;
+    }
 }
