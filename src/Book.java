@@ -1,14 +1,16 @@
 public class Book {
     private String title;
-    public String author;
-    public int year;
+    private String author;
+    private int year;
     private int popularityCount;
-    Book(String t, String a, int y, int pCount) {
-        this.title = t;
-        this.author = a;
-        this.year = y;
-        this.popularityCount = pCount;
+
+    public Book(String title, String author, int year, int popularityCount) {
+        this.title = title;
+        this.author = author;
+        this.year = year;
+        this.popularityCount = popularityCount;
     }
+
     public String getTitle() {
         return title;
     }
@@ -18,14 +20,31 @@ public class Book {
     }
 
     public String getAuthor() {
-        return this.author;
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public int getPublicationYear() {
-        return this.year;
+        return year;
     }
 
-    public int getPopularity() {
-        return this.popularityCount;
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getPopularityCount() {
+        return popularityCount;
+    }
+
+    public void setPopularityCount(int popularityCount) {
+        this.popularityCount = popularityCount;
+    }
+
+    @Override
+    public String toString() {
+        return title + "," + author + "," + year + "," + popularityCount;
     }
 }

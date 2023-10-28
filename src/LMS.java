@@ -16,13 +16,12 @@ public class LMS extends JFrame {
     private JButton editItemButton;
     private JButton deleteItemButton;
     private List<Book> books;
-    //private static final String FILE_NAME = "data.txt";
 
     public LMS() {
         super("GUI Example");
 
         // Create the JTable
-        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"Title", "Author", "Publication Year", "Read Item"}, 0);
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"Title", "Author", "Publication Year", "Read Item"}, 1);
         table = new JTable(tableModel);
 
         // Create the JScrollPane
@@ -49,11 +48,12 @@ public class LMS extends JFrame {
         pack();
         setVisible(true);
 
-        // Add listeners to the buttons
         addItemButton.addActionListener(e -> {
-            // Add a new item to the table and update the list
-            // After adding, call saveLibraryData(books) to save the updated data to the file
+            // Create and show the AddBookDialog
+            AddBookDialog addBookDialog = new AddBookDialog(this, table, books);
+            addBookDialog.setVisible(true);
         });
+
 
         editItemButton.addActionListener(e -> {
             // Edit the selected item in the table
@@ -62,10 +62,14 @@ public class LMS extends JFrame {
         deleteItemButton.addActionListener(e -> {
             // Delete the selected item from the table
         });
+
+        // Initialize the books list
+        books = new ArrayList<>();
+        loadLibraryData();
     }
 
     public void loadLibraryData() {
-        List<Book> books = new ArrayList<>();
+        //List<Book> books = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader("/Users/izzanaseer/Documents/FAST/sem5/SCD/SCD Assignment3/LMS_Swing/src/data.txt"))) {
             String line;
@@ -99,13 +103,16 @@ public class LMS extends JFrame {
             e.printStackTrace();
         }
     }
-
     public static void main(String[] args) {
-        // Create a new LMS object
-        LMS lms = new LMS();
+//        // Create a new LMS object
+//        LMS lms = new LMS();
+//
+//        // Load the library data from the file
+//        lms.loadLibraryData();
 
-        // Load the library data from the file
-        lms.loadLibraryData();
+        SwingUtilities.invokeLater(() -> {
+            LMS lms = new LMS();
+            lms.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        });
     }
 }
-
