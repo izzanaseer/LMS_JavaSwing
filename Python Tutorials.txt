@@ -1,0 +1,26 @@
+Title: Python Tutorials
+
+
+Python Introduction
+Python is a general-purpose, high-level programming language. Its design philosophy emphasizes code readability with its notable use of whitespace indentation. Its language constructs and object-oriented approach aim to help programmers write clear, logical code for small and large-scale projects.
+
+
+Data types
+Python has a variety of data types, including integers, floats, strings, and lists. The data type of a variable determines what kind of data it can store. For example, an integer variable can only store integer values, while a string variable can only store strings.
+
+
+Conditional statements
+Conditional statements allow you to control the flow of execution of your program. The most common conditional statements are if, else, and elif.
+
+
+Loops
+Loops allow you to repeat a block of code until a certain condition is met. The most common loop statements are for and while.
+
+
+Functions
+Functions allow you to group together related code and reuse it throughout your program. To define a function, you use the def keyword.
+
+
+Conclusion
+This is just a basic overview of the Python programming language. There is much more to learn, but this should give you a good foundation to start with.
+If you are interested in learning more about Python, there are many resources available online and in libraries. You can also find many Python tutorials and courses on websites like Coursera and Udemy.

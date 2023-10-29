@@ -1,6 +1,8 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -80,7 +82,6 @@ public class LMS extends JFrame {
                 if (bookToRemove != null) {
                     // Remove the book from the list
                     books.remove(bookToRemove);
-
                     // Remove the item from the table
                     DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
                     for (int i = 0; i < tableModel.getRowCount(); i++) {
@@ -89,7 +90,6 @@ public class LMS extends JFrame {
                             break;
                         }
                     }
-
                     // Save the updated data to the text file
                     saveLibraryData(books);
                 } else {
@@ -100,6 +100,33 @@ public class LMS extends JFrame {
             }
         });
 
+
+        table.getColumnModel().getColumn(3).setCellRenderer(new TableRenderBtn());
+        table.getColumnModel().getColumn(3).setCellEditor(new TableBtnEditor(new JTextField()));
+
+
+        //Action listener for the "Read" button
+        table.getColumnModel().getColumn(3).setCellRenderer(new TableRenderBtn());
+
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int column = table.getColumnModel().getColumnIndex("Read Item");
+                if (column != -1 && table.columnAtPoint(e.getPoint()) == column) {
+                    int row = table.rowAtPoint(e.getPoint());
+                    if (row != -1) {
+                        Book selectedBook = books.get(row);
+                        String bookContent = selectedBook.getContent();
+                        ReadBookDialog readBookDialog = new ReadBookDialog(LMS.this, selectedBook.getTitle(), bookContent);
+                        readBookDialog.setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(LMS.this, "Please select a book to read.");
+                    }
+                }
+            }
+        });
+
+
         // Initialize the books list
         books = new ArrayList<>();
         loadLibraryData();
@@ -107,7 +134,7 @@ public class LMS extends JFrame {
 
     public void loadLibraryData() {
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("/Users/izzanaseer/Documents/FAST/sem5/SCD/SCD Assignment3/LMS_Swing/src/data.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("data.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] values = line.split(",");
@@ -129,7 +156,7 @@ public class LMS extends JFrame {
     }
 
     public void saveLibraryData(List<Book> books) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("/Users/izzanaseer/Documents/FAST/sem5/SCD/SCD Assignment3/LMS_Swing/src/data.txt"))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("data.txt"))) {
             for (Book book : books) {
                 writer.write(book.toString() + "\n");
             }
