@@ -66,11 +66,9 @@ public class LMS extends JFrame {
 
 
         deleteItemButton.addActionListener(e -> {
-            // Show an input dialog to get the name of the item to delete
             String itemNameToDelete = JOptionPane.showInputDialog(this, "Enter the name of the item to delete:");
 
             if (itemNameToDelete != null && !itemNameToDelete.isEmpty()) {
-                // Find and remove the item from the list of books
                 Book bookToRemove = null;
                 for (Book book : books) {
                     if (book.getTitle().equals(itemNameToDelete)) {
@@ -78,7 +76,6 @@ public class LMS extends JFrame {
                         break;
                     }
                 }
-
                 if (bookToRemove != null) {
                     // Remove the book from the list
                     books.remove(bookToRemove);
@@ -90,7 +87,6 @@ public class LMS extends JFrame {
                             break;
                         }
                     }
-                    // Save the updated data to the text file
                     saveLibraryData(books);
                 } else {
                     JOptionPane.showMessageDialog(this, "Item not found in the library.");
@@ -105,9 +101,7 @@ public class LMS extends JFrame {
         table.getColumnModel().getColumn(3).setCellEditor(new TableBtnEditor(new JTextField()));
 
 
-        //Action listener for the "Read" button
         table.getColumnModel().getColumn(3).setCellRenderer(new TableRenderBtn());
-
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -126,6 +120,18 @@ public class LMS extends JFrame {
             }
         });
 
+        table.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                Point point = e.getPoint();
+                int row = table.rowAtPoint(point);
+
+                if (row != -1) {
+                    table.clearSelection();
+                    table.addRowSelectionInterval(row, row);
+                }
+            }
+        });
 
         // Initialize the books list
         books = new ArrayList<>();
@@ -154,7 +160,6 @@ public class LMS extends JFrame {
             e.printStackTrace();
         }
     }
-
     public void saveLibraryData(List<Book> books) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("data.txt"))) {
             for (Book book : books) {
@@ -164,12 +169,11 @@ public class LMS extends JFrame {
             e.printStackTrace();
         }
     }
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             LMS lms = new LMS();
             lms.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         });
-
     }
 }

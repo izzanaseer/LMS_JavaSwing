@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-
 public class TableBtnEditor extends DefaultCellEditor {
     private final JButton button;
     private String label;

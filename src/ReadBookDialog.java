@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 public class ReadBookDialog extends JDialog {
     private JTextArea textArea;
     public ReadBookDialog(JFrame parent, String bookTitle, String bookContent) {

@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-
 public class Book {
     private String title;
     private String author;
@@ -39,11 +38,11 @@ public class Book {
         this.year = year;
     }
 
-    public int getPopularityCount() {
+    public int getPopularity() {
         return popularityCount;
     }
 
-    public void setPopularityCount(int popularityCount) {
+    public void setPopularity(int popularityCount) {
         this.popularityCount = popularityCount;
     }
 

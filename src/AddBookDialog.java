@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-
 public class AddBookDialog extends JDialog {
     private JTextField titleField;
     private JTextField authorField;
