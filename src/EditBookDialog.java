@@ -58,6 +58,16 @@ public class EditBookDialog extends JDialog {
         yearField.setText(tableModel.getValueAt(selectedRow, 2).toString());
     }
 
+    private void saveLibraryData(List<Book> books) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("/Users/izzanaseer/Documents/FAST/sem5/SCD/SCD Assignment3/LMS_Swing/src/data.txt"))) {
+            for (Book book : books) {
+                writer.write(book.toString() + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void updateBookDetails() {
         DefaultTableModel tableModel = (DefaultTableModel) parentTable.getModel();
         tableModel.setValueAt(titleField.getText(), selectedRow, 0);
@@ -70,15 +80,5 @@ public class EditBookDialog extends JDialog {
         book.setPublicationYear(Integer.parseInt(yearField.getText()));
 
         saveLibraryData(books);
-    }
-
-    private void saveLibraryData(List<Book> books) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("/Users/izzanaseer/Documents/FAST/sem5/SCD/SCD Assignment3/LMS_Swing/src/data.txt"))) {
-            for (Book book : books) {
-                writer.write(book.toString() + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

@@ -1,8 +1,7 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -10,6 +9,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.ui.RefineryUtilities;
 public class LMS extends JFrame {
     private JTable table;
     private JScrollPane scrollPane;
@@ -36,6 +40,10 @@ public class LMS extends JFrame {
         buttonPanel.add(addItemButton);
         buttonPanel.add(editItemButton);
         buttonPanel.add(deleteItemButton);
+
+        JButton viewPopularityButton = new JButton("View Popularity");
+        viewPopularityButton.addActionListener(e -> createPopularityPieChart());
+        buttonPanel.add(viewPopularityButton);
 
         getContentPane().add(scrollPane, BorderLayout.CENTER);
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
@@ -66,7 +74,7 @@ public class LMS extends JFrame {
 
 
         deleteItemButton.addActionListener(e -> {
-            String itemNameToDelete = JOptionPane.showInputDialog(this, "Enter the name of the item to delete:");
+            String itemNameToDelete = JOptionPane.showInputDialog(this, "Enter name of the item to delete:");
 
             if (itemNameToDelete != null && !itemNameToDelete.isEmpty()) {
                 Book bookToRemove = null;
@@ -77,9 +85,7 @@ public class LMS extends JFrame {
                     }
                 }
                 if (bookToRemove != null) {
-                    // Remove the book from the list
                     books.remove(bookToRemove);
-                    // Remove the item from the table
                     DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
                     for (int i = 0; i < tableModel.getRowCount(); i++) {
                         if (tableModel.getValueAt(i, 0).equals(itemNameToDelete)) {
@@ -133,9 +139,40 @@ public class LMS extends JFrame {
             }
         });
 
+        viewPopularityButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFreeChart chart = createPopularityPieChart();
+                ChartPanel chartPanel = new ChartPanel(chart);
+                chartPanel.setBackground(Color.BLACK);
+                JFrame frame = new JFrame("Popularity Chart");
+                frame.add(chartPanel);
+                frame.pack();
+                RefineryUtilities.centerFrameOnScreen(frame);
+                frame.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        frame.dispose();
+                    }
+                });
+                frame.setVisible(true);
+            }
+        });
+
         // Initialize the books list
         books = new ArrayList<>();
         loadLibraryData();
+    }
+
+    private JFreeChart createPopularityPieChart()
+    {
+        DefaultPieDataset data = new DefaultPieDataset();
+        for (Book Item : books)
+        {
+            data.setValue(Item.getTitle(), Item.getPopularity());
+        }
+        JFreeChart chart = ChartFactory.createPieChart("Popularity Count of Items", data);
+        return chart;
     }
 
     public void loadLibraryData() {

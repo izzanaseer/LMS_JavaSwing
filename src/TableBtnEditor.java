@@ -32,20 +32,17 @@ public class TableBtnEditor extends DefaultCellEditor {
         return button;
     }
 
-        @Override
-        public Object getCellEditorValue()
-        {
-            if (isPushed)
-            {
-            }
-            isPushed = false;
-            return label;
+    @Override
+    public boolean stopCellEditing()
+    {
+        isPushed = false;
+        return super.stopCellEditing();
+    }
+    @Override
+    public Object getCellEditorValue() {
+        if (isPushed) {
         }
-
-        @Override
-        public boolean stopCellEditing()
-        {
-            isPushed = false;
-            return super.stopCellEditing();
-        }
+        isPushed = false;
+        return label;
+    }
 }
